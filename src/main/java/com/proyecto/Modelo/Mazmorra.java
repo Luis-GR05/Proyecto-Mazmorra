@@ -8,7 +8,7 @@ import java.util.List;
 
 public class Mazmorra {
     private Celda[][] escenario;
-    protected jugador jugador;
+    protected Protagonista protagonista;
     protected List<enemigo> enemigos;
     protected int ancho;
     protected int alto;
@@ -57,12 +57,12 @@ public class Mazmorra {
                     case 'S': // Suelo
                         getEscenario()[y][x] = new Celda(tipoCelda.suelo);
                         break;
-                    case 'J': // Posición inicial del jugador
+                    case 'J': // Posición inicial del Protagonista
                         getEscenario()[y][x] = new Celda(tipoCelda.suelo);
-                        if (jugador != null) {
-                            jugador.setPosX(x);
-                            jugador.setPosY(y);
-                            getEscenario()[y][x].setOcupante(jugador);
+                        if (protagonista != null) {
+                            protagonista.setPosX(x);
+                            protagonista.setPosY(y);
+                            getEscenario()[y][x].setOcupante(protagonista);
                         }
                         break;
                     case 'E': // Posición de enemigo
@@ -106,15 +106,15 @@ public class Mazmorra {
     }
 
     /**
-     * Establece el jugador principal en la mazmorra
+     * Establece el Protagonista principal en la mazmorra
      * 
-     * @param jugador Instancia del jugador
+     * @param Protagonista Instancia del Protagonista
      */
-    public void setJugador(jugador jugador) {
-        this.jugador = jugador;
-        // Si el jugador ya tiene posición, ocupar esa celda
-        if (jugador.getPosX() >= 0 && jugador.getPosY() >= 0) {
-            getEscenario()[jugador.getPosY()][jugador.getPosX()].setOcupante(jugador);
+    public void setJugador(Protagonista protagonista) {
+        this.protagonista = protagonista;
+        // Si el Protagonista ya tiene posición, ocupar esa celda
+        if (protagonista.getPosX() >= 0 && protagonista.getPosY() >= 0) {
+            getEscenario()[protagonista.getPosY()][protagonista.getPosX()].setOcupante(protagonista);
         }
     }
 
@@ -126,8 +126,8 @@ public class Mazmorra {
         return alto;
     }
 
-    public jugador getJugador() {
-        return jugador;
+    public Protagonista getJugador() {
+        return protagonista;
     }
 
     public List<enemigo> getEnemigos() {

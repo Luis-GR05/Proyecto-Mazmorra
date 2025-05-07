@@ -1,7 +1,7 @@
 package com.proyecto.Modelo;
 
-public class jugador extends Personaje{
-    public jugador(int salud, int fuerza, int defensa, int velocidad){
+public class Protagonista extends Personaje{
+    public Protagonista(int salud, int fuerza, int defensa, int velocidad){
         super(salud, fuerza, defensa, velocidad);
     }
 
