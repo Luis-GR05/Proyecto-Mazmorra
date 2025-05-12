@@ -201,3 +201,124 @@ public class JuegoController implements Observador {
             }
         }
     }
+
+    /**
+     * Actualiza la información del jugador en la interfaz
+     */
+    private void actualizarInfoJugador() {
+        Protagonista jugador = mazmorra.getJugador();
+
+        nombreJugadorLabel.setText("Nombre: " + nombreJugador);
+
+        int saludMax = jugador.getSalud();
+        int saludActual = Math.max(0, jugador.getSalud());
+
+        saludJugadorBar.setProgress((double) saludActual / saludMax);
+        saludJugadorLabel.setText("Salud: " + saludActual + "/" + saludMax);
+        fuerzaJugadorLabel.setText("Fuerza: " + jugador.getFuerza());
+        defensaJugadorLabel.setText("Defensa: " + jugador.getDefensa());
+        velocidadJugadorLabel.setText("Velocidad: " + jugador.getVelocidad());
+    }
+
+    /**
+     * Actualiza la información de los enemigos en la interfaz
+     */
+    private void actualizarInfoEnemigos() {
+        enemigosContainer.getChildren().clear();
+
+        for (int i = 0; i < mazmorra.getEnemigos().size(); i++) {
+            enemigo enemigo = mazmorra.getEnemigos().get(i);
+
+            // Crear panel para el enemigo
+            VBox enemigoInfo = new VBox(5);
+
+            Label nombreLabel = new Label("Enemigo " + (i + 1));
+            nombreLabel.setStyle("-fx-font-weight: bold;");
+
+            ProgressBar saludBar = new ProgressBar();
+            saludBar.setPrefWidth(200);
+
+            int saludMax = enemigo.getSalud();
+            int saludActual = Math.max(0, enemigo.getSalud());
+
+            saludBar.setProgress((double) saludActual / saludMax);
+
+            Label saludLabel = new Label("Salud: " + saludActual + "/" + saludMax);
+            Label fuerzaLabel = new Label("Fuerza: " + enemigo.getFuerza());
+            Label defensaLabel = new Label("Defensa: " + enemigo.getDefensa());
+            Label velocidadLabel = new Label("Velocidad: " + enemigo.getVelocidad());
+            Label percepcionLabel = new Label("Percepción: " + enemigo.getPercepcion());
+
+            enemigoInfo.getChildren().addAll(nombreLabel, saludBar, saludLabel,
+                    fuerzaLabel, defensaLabel, velocidadLabel, percepcionLabel);
+
+            // Añadir separador si no es el último enemigo
+            if (i < mazmorra.getEnemigos().size() - 1) {
+                enemigoInfo.getChildren().add(new Separator());
+            }
+
+            enemigosContainer.getChildren().add(enemigoInfo);
+        }
+    }
+
+    /**
+     * Determina el orden de turnos basado en la velocidad de los personajes
+     */
+    private void determinarOrdenTurnos() {
+        ordenTurnos = new ArrayList<>();
+
+        // Añadir protagonista
+        ordenTurnos.add(mazmorra.getJugador());
+
+        // Añadir enemigos
+        ordenTurnos.addAll(mazmorra.getEnemigos());
+
+        // Ordenar por velocidad (mayor a menor)
+        Collections.sort(ordenTurnos, (p1, p2) -> Integer.compare(p2.getVelocidad(), p1.getVelocidad()));
+
+        // Actualizar la vista de orden de turnos
+        actualizarVistaOrdenTurnos();
+    }
+
+    /**
+     * Actualiza la vista del orden de turnos
+     */
+    private void actualizarVistaOrdenTurnos() {
+
+        if (ordenTurnos == null) {
+            return;
+        }
+
+        ObservableList<String> items = FXCollections.observableArrayList();
+
+        for (int i = 0; i < ordenTurnos.size(); i++) {
+            Personaje p = ordenTurnos.get(i);
+            String nombre;
+
+            if (p instanceof Protagonista) {
+                nombre = nombreJugador;
+            } else {
+                int index = mazmorra.getEnemigos().indexOf(p);
+                nombre = "Enemigo " + (index + 1);
+            }
+
+            String item = nombre + " (Velocidad: " + p.getVelocidad() + ")";
+            if (i == turnoActual) {
+                item += " ← Turno actual";
+            }
+
+            items.add(item);
+        }
+
+        ordenTurnosListView.setItems(items);
+        ordenTurnosListView.getSelectionModel().select(turnoActual);
+
+        if (!ordenTurnos.isEmpty()) {
+            if (ordenTurnos.get(turnoActual) instanceof Protagonista) {
+                turnoActualLabel.setText(nombreJugador);
+            } else {
+                int index = mazmorra.getEnemigos().indexOf(ordenTurnos.get(turnoActual));
+                turnoActualLabel.setText("Enemigo " + (index + 1));
+            }
+        }
+    }
