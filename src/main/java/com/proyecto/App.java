@@ -16,7 +16,7 @@ public class App extends Application {
     public void start(Stage primaryStage) throws Exception {
         // Cargar la vista de creación de personaje
         FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(getClass().getResource("/com/proyecto/CrearPersonajeView.fxml"));
+        loader.setLocation(getClass().getResource("CrearPersonajeView.fxml"));
         Parent root = loader.load();
         
         // Configurar la escena y mostrar
