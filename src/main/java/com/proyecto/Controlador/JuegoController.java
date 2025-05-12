@@ -285,40 +285,39 @@ public class JuegoController implements Observador {
      */
     private void actualizarVistaOrdenTurnos() {
 
-        if (ordenTurnos == null) {
-            return;
-        }
+        if (ordenTurnos != null) {
 
-        ObservableList<String> items = FXCollections.observableArrayList();
+            ObservableList<String> items = FXCollections.observableArrayList();
 
-        for (int i = 0; i < ordenTurnos.size(); i++) {
-            Personaje p = ordenTurnos.get(i);
-            String nombre;
+            for (int i = 0; i < ordenTurnos.size(); i++) {
+                Personaje p = ordenTurnos.get(i);
+                String nombre;
 
-            if (p instanceof Protagonista) {
-                nombre = nombreJugador;
-            } else {
-                int index = mazmorra.getEnemigos().indexOf(p);
-                nombre = "Enemigo " + (index + 1);
+                if (p instanceof Protagonista) {
+                    nombre = nombreJugador;
+                } else {
+                    int index = mazmorra.getEnemigos().indexOf(p);
+                    nombre = "Enemigo " + (index + 1);
+                }
+
+                String item = nombre + " (Velocidad: " + p.getVelocidad() + ")";
+                if (i == turnoActual) {
+                    item += " ← Turno actual";
+                }
+
+                items.add(item);
             }
 
-            String item = nombre + " (Velocidad: " + p.getVelocidad() + ")";
-            if (i == turnoActual) {
-                item += " ← Turno actual";
-            }
+            ordenTurnosListView.setItems(items);
+            ordenTurnosListView.getSelectionModel().select(turnoActual);
 
-            items.add(item);
-        }
-
-        ordenTurnosListView.setItems(items);
-        ordenTurnosListView.getSelectionModel().select(turnoActual);
-
-        if (!ordenTurnos.isEmpty()) {
-            if (ordenTurnos.get(turnoActual) instanceof Protagonista) {
-                turnoActualLabel.setText(nombreJugador);
-            } else {
-                int index = mazmorra.getEnemigos().indexOf(ordenTurnos.get(turnoActual));
-                turnoActualLabel.setText("Enemigo " + (index + 1));
+            if (!ordenTurnos.isEmpty()) {
+                if (ordenTurnos.get(turnoActual) instanceof Protagonista) {
+                    turnoActualLabel.setText(nombreJugador);
+                } else {
+                    int index = mazmorra.getEnemigos().indexOf(ordenTurnos.get(turnoActual));
+                    turnoActualLabel.setText("Enemigo " + (index + 1));
+                }
             }
         }
     }
@@ -329,49 +328,48 @@ public class JuegoController implements Observador {
     private void configurarControlesTeclado() {
         // Ahora podemos estar seguros de que la escena no es null
         tableroGrid.getScene().addEventFilter(KeyEvent.KEY_PRESSED, event -> {
-            if (juegoTerminado) {
-                return;
-            }
+            if (!juegoTerminado) {
 
-            if (ordenTurnos.get(turnoActual) instanceof Protagonista) {
-                Protagonista protagonista = (Protagonista) ordenTurnos.get(turnoActual);
+                if (ordenTurnos.get(turnoActual) instanceof Protagonista) {
+                    Protagonista protagonista = (Protagonista) ordenTurnos.get(turnoActual);
 
-                if (protagonista.estaTurnoEnEspera()) {
-                    int dx = 0, dy = 0;
+                    if (protagonista.estaTurnoEnEspera()) {
+                        int dx = 0, dy = 0;
 
-                    switch (event.getCode()) {
-                        case UP:
-                        case W:
-                            dy = -1;
-                            break;
-                        case DOWN:
-                        case S:
-                            dy = 1;
-                            break;
-                        case LEFT:
-                        case A:
-                            dx = -1;
-                            break;
-                        case RIGHT:
-                        case D:
-                            dx = 1;
-                            break;
-                        default:
-                            return;
-                    }
+                        switch (event.getCode()) {
+                            case UP:
+                            case W:
+                                dy = -1;
+                                break;
+                            case DOWN:
+                            case S:
+                                dy = 1;
+                                break;
+                            case LEFT:
+                            case A:
+                                dx = -1;
+                                break;
+                            case RIGHT:
+                            case D:
+                                dx = 1;
+                                break;
+                            default:
+                                return;
+                        }
 
-                    // Intentar mover al jugador
-                    if (moverJugador(dx, dy)) {
-                        // Marcar el turno como completado
-                        protagonista.completarTurno();
+                        // Intentar mover al jugador
+                        if (moverJugador(dx, dy)) {
+                            // Marcar el turno como completado
+                            protagonista.completarTurno();
 
-                        // Avanzar al siguiente turno
-                        siguienteTurno();
+                            // Avanzar al siguiente turno
+                            siguienteTurno();
+                        }
                     }
                 }
-            }
 
-            event.consume();
+                event.consume();
+            }
         });
     }
 
@@ -386,12 +384,13 @@ public class JuegoController implements Observador {
         Protagonista jugador = mazmorra.getJugador();
         int nuevaX = jugador.getPosX() + dx;
         int nuevaY = jugador.getPosY() + dy;
+        boolean valido = true;
 
         // Verificar si la nueva posición está dentro de los límites
         if (nuevaX < 0 || nuevaX >= mazmorra.getAncho() ||
                 nuevaY < 0 || nuevaY >= mazmorra.getAlto()) {
             mostrarMensaje("¡No puedes salir del mapa!");
-            return false;
+            valido = false;
         }
 
         Celda nuevaCelda = mazmorra.getEscenario()[nuevaY][nuevaX];
@@ -399,7 +398,7 @@ public class JuegoController implements Observador {
         // Verificar si es una pared
         if (nuevaCelda.esPared()) {
             mostrarMensaje("¡No puedes atravesar paredes!");
-            return false;
+            valido = false;
         }
 
         // Verificar si está ocupada
@@ -407,14 +406,14 @@ public class JuegoController implements Observador {
             // Atacar al ocupante
             Personaje defensor = nuevaCelda.getOcupante();
             atacar(jugador, defensor);
-            return true;
+            valido = true;
+        } else {
+
+            // Mover al jugador
+            mazmorra.moverPersonaje(jugador, nuevaX, nuevaY);
+            mostrarMensaje("Te has movido.");
         }
-
-        // Mover al jugador
-        mazmorra.moverPersonaje(jugador, nuevaX, nuevaY);
-
-        mostrarMensaje("Te has movido.");
-        return true;
+        return valido;
     }
 
     /**
@@ -452,28 +451,27 @@ public class JuegoController implements Observador {
      * Inicia el turno del personaje actual
      */
     private void comenzarTurnoActual() {
-        if (juegoTerminado) {
-            return;
-        }
+        if (!juegoTerminado) {
 
-        Personaje personajeActual = ordenTurnos.get(turnoActual);
+            Personaje personajeActual = ordenTurnos.get(turnoActual);
 
-        if (personajeActual instanceof Protagonista) {
-            // Iniciar turno del jugador (esperar entrada del usuario)
-            personajeActual.jugar();
-            mostrarMensaje("Tu turno. Usa las teclas de dirección para moverte.");
-        } else if (personajeActual instanceof enemigo) {
-            // Retrasar la ejecución del turno del enemigo para dar tiempo al jugador a ver
-            // lo que ocurre
-            Platform.runLater(() -> {
-                mostrarMensaje("Turno del enemigo...");
-
-                // Ejecutar el turno del enemigo
+            if (personajeActual instanceof Protagonista) {
+                // Iniciar turno del jugador (esperar entrada del usuario)
                 personajeActual.jugar();
+                mostrarMensaje("Tu turno. Usa las teclas de dirección para moverte.");
+            } else if (personajeActual instanceof enemigo) {
+                // Retrasar la ejecución del turno del enemigo para dar tiempo al jugador a ver
+                // lo que ocurre
+                Platform.runLater(() -> {
+                    mostrarMensaje("Turno del enemigo...");
 
-                // Continuar con el siguiente turno
-                siguienteTurno();
-            });
+                    // Ejecutar el turno del enemigo
+                    personajeActual.jugar();
+
+                    // Continuar con el siguiente turno
+                    siguienteTurno();
+                });
+            }
         }
     }
 
@@ -481,15 +479,14 @@ public class JuegoController implements Observador {
      * Avanza al siguiente turno
      */
     private void siguienteTurno() {
-        if (juegoTerminado) {
-            return;
+        if (!juegoTerminado) {
+
+            turnoActual = (turnoActual + 1) % ordenTurnos.size();
+            actualizarVistaOrdenTurnos();
+
+            // Iniciar el nuevo turno
+            comenzarTurnoActual();
         }
-
-        turnoActual = (turnoActual + 1) % ordenTurnos.size();
-        actualizarVistaOrdenTurnos();
-
-        // Iniciar el nuevo turno
-        comenzarTurnoActual();
     }
 
     /**

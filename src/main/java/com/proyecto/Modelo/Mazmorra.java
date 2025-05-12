@@ -110,60 +110,62 @@ public class Mazmorra implements Sujeto {
                 String[] datos = linea.split(",");
                 if (datos.length < 7) {
                     System.err.println("Línea CSV inválida (campos insuficientes): " + linea);
-                    continue;
-                }
+                } else {
 
-                try {
-                    int salud = Integer.parseInt(datos[0].trim());
-                    int fuerza = Integer.parseInt(datos[1].trim());
-                    int defensa = Integer.parseInt(datos[2].trim());
-                    int velocidad = Integer.parseInt(datos[3].trim());
-                    int percepcion = Integer.parseInt(datos[4].trim());
-                    int x = Integer.parseInt(datos[5].trim());
-                    int y = Integer.parseInt(datos[6].trim());
+                    try {
+                        int salud = Integer.parseInt(datos[0].trim());
+                        int fuerza = Integer.parseInt(datos[1].trim());
+                        int defensa = Integer.parseInt(datos[2].trim());
+                        int velocidad = Integer.parseInt(datos[3].trim());
+                        int percepcion = Integer.parseInt(datos[4].trim());
+                        int x = Integer.parseInt(datos[5].trim());
+                        int y = Integer.parseInt(datos[6].trim());
 
-                    if (x < 0 || x >= ancho || y < 0 || y >= alto) {
-                        System.err.println("Posición de enemigo fuera de límites: x=" + x + ", y=" + y +
-                                ". Ajustando a posición válida.");
-                        // Ajustar a posición válida
-                        x = Math.min(Math.max(0, x), ancho - 1);
-                        y = Math.min(Math.max(0, y), alto - 1);
-                    }
+                        if (x < 0 || x >= ancho || y < 0 || y >= alto) {
+                            System.err.println("Posición de enemigo fuera de límites: x=" + x + ", y=" + y +
+                                    ". Ajustando a posición válida.");
+                            // Ajustar a posición válida
+                            x = Math.min(Math.max(0, x), ancho - 1);
+                            y = Math.min(Math.max(0, y), alto - 1);
+                        }
 
-                    enemigo nuevoEnemigo = new enemigo(salud, fuerza, defensa, velocidad, percepcion);
-                    nuevoEnemigo.setPosX(x);
-                    nuevoEnemigo.setPosY(y);
-                    nuevoEnemigo.setMazmorra(this);
+                        enemigo nuevoEnemigo = new enemigo(salud, fuerza, defensa, velocidad, percepcion);
+                        nuevoEnemigo.setPosX(x);
+                        nuevoEnemigo.setPosY(y);
+                        nuevoEnemigo.setMazmorra(this);
 
-                    // Verificar si la celda ya está ocupada
-                    if (getEscenario()[y][x].estaOcupada()) {
-                        System.err.println("Celda [" + y + "][" + x + "] ya ocupada, buscando celda libre cercana.");
-                        // Buscar una celda libre cercana
-                        boolean ubicado = false;
-                        for (int dy = -1; dy <= 1 && !ubicado; dy++) {
-                            for (int dx = -1; dx <= 1 && !ubicado; dx++) {
-                                int nx = x + dx;
-                                int ny = y + dy;
-                                if (nx >= 0 && nx < ancho && ny >= 0 && ny < alto &&
-                                        !getEscenario()[ny][nx].esPared() && !getEscenario()[ny][nx].estaOcupada()) {
-                                    nuevoEnemigo.setPosX(nx);
-                                    nuevoEnemigo.setPosY(ny);
-                                    getEscenario()[ny][nx].setOcupante(nuevoEnemigo);
-                                    enemigos.add(nuevoEnemigo);
-                                    ubicado = true;
+                        // Verificar si la celda ya está ocupada
+                        if (getEscenario()[y][x].estaOcupada()) {
+                            System.err
+                                    .println("Celda [" + y + "][" + x + "] ya ocupada, buscando celda libre cercana.");
+                            // Buscar una celda libre cercana
+                            boolean ubicado = false;
+                            for (int dy = -1; dy <= 1 && !ubicado; dy++) {
+                                for (int dx = -1; dx <= 1 && !ubicado; dx++) {
+                                    int nx = x + dx;
+                                    int ny = y + dy;
+                                    if (nx >= 0 && nx < ancho && ny >= 0 && ny < alto &&
+                                            !getEscenario()[ny][nx].esPared()
+                                            && !getEscenario()[ny][nx].estaOcupada()) {
+                                        nuevoEnemigo.setPosX(nx);
+                                        nuevoEnemigo.setPosY(ny);
+                                        getEscenario()[ny][nx].setOcupante(nuevoEnemigo);
+                                        enemigos.add(nuevoEnemigo);
+                                        ubicado = true;
+                                    }
                                 }
                             }
+                            if (!ubicado) {
+                                System.err.println("No se pudo ubicar al enemigo en una posición cercana.");
+                            }
+                        } else {
+                            getEscenario()[y][x].setOcupante(nuevoEnemigo);
+                            enemigos.add(nuevoEnemigo);
                         }
-                        if (!ubicado) {
-                            System.err.println("No se pudo ubicar al enemigo en una posición cercana.");
-                        }
-                    } else {
-                        getEscenario()[y][x].setOcupante(nuevoEnemigo);
-                        enemigos.add(nuevoEnemigo);
+                    } catch (NumberFormatException e) {
+                        System.err.println("Error al parsear datos del enemigo: " + linea);
+                        e.printStackTrace();
                     }
-                } catch (NumberFormatException e) {
-                    System.err.println("Error al parsear datos del enemigo: " + linea);
-                    e.printStackTrace();
                 }
             }
         }
@@ -193,29 +195,32 @@ public class Mazmorra implements Sujeto {
      * @return true si el movimiento fue exitoso, false en caso contrario
      */
     public boolean moverPersonaje(Personaje personaje, int nuevaX, int nuevaY) {
+        boolean valida = true;
         // Verificar si la nueva posición está dentro de los límites
         if (nuevaX < 0 || nuevaX >= ancho || nuevaY < 0 || nuevaY >= alto) {
-            return false;
+            valida = false;
         }
 
         // Verificar si la celda destino es una pared
-        if (escenario[nuevaY][nuevaX].esPared()) {
-            return false;
+        else if (escenario[nuevaY][nuevaX].esPared()) {
+            valida = false;
         }
 
         // Verificar si la celda destino está ocupada
-        if (escenario[nuevaY][nuevaX].estaOcupada()) {
-            return false;
+        else if (escenario[nuevaY][nuevaX].estaOcupada()) {
+            valida = false;
         }
 
-        // Actualizar la posición
-        escenario[personaje.getPosY()][personaje.getPosX()].setOcupante(null);
-        escenario[nuevaY][nuevaX].setOcupante(personaje);
-        personaje.setPosX(nuevaX);
-        personaje.setPosY(nuevaY);
-
+        else {
+            // Actualizar la posición
+            escenario[personaje.getPosY()][personaje.getPosX()].setOcupante(null);
+            escenario[nuevaY][nuevaX].setOcupante(personaje);
+            personaje.setPosX(nuevaX);
+            personaje.setPosY(nuevaY);
+        }
         notificarObservadores();
-        return true;
+        
+        return valida;
     }
 
     /**
