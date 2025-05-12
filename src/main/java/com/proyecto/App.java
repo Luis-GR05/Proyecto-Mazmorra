@@ -6,33 +6,32 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-import java.io.IOException;
-
 /**
- * JavaFX App
+ * Clase principal que inicia la aplicación del juego de mazmorras
+ * @author Tu Nombre
  */
 public class App extends Application {
-
-    private static Scene scene;
-
+    
     @Override
-    public void start(Stage stage) throws IOException {
-        scene = new Scene(loadFXML("primary"), 640, 480);
-        stage.setScene(scene);
-        stage.show();
+    public void start(Stage primaryStage) throws Exception {
+        // Cargar la vista de creación de personaje
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("/com/proyecto/CrearPersonajeView.fxml"));
+        Parent root = loader.load();
+        
+        // Configurar la escena y mostrar
+        Scene scene = new Scene(root);
+        primaryStage.setScene(scene);
+        primaryStage.setTitle("Juego de Mazmorras - Crear Personaje");
+        primaryStage.setResizable(false);
+        primaryStage.show();
     }
-
-    static void setRoot(String fxml) throws IOException {
-        scene.setRoot(loadFXML(fxml));
-    }
-
-    private static Parent loadFXML(String fxml) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource(fxml + ".fxml"));
-        return fxmlLoader.load();
-    }
-
+    
+    /**
+     * Método principal que lanza la aplicación
+     * @param args Argumentos de línea de comandos
+     */
     public static void main(String[] args) {
-        launch();
+        launch(args);
     }
-
 }
