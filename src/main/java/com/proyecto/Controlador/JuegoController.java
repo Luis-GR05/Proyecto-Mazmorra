@@ -165,14 +165,14 @@ public class JuegoController implements Observador {
 
                 Rectangle fondo = new Rectangle(tamCelda, tamCelda);
 
-                // Load the images using the class loader
+                // Crear Imagenes
                 Image imagenPared = new Image(getClass().getResourceAsStream("/com/proyecto/Imagenes/Pared.png"));
                 ImagePattern patronImagenPared = new ImagePattern(imagenPared);
 
                 Image imagenSuelo = new Image(getClass().getResourceAsStream("/com/proyecto/Imagenes/Suelo.png"));
                 ImagePattern patronImagenSuelo = new ImagePattern(imagenSuelo);
 
-                // Set the appropriate image pattern based on cell type
+                // Poner imagenes dependiendo del tipo
                 if (celda.esPared()) {
                     fondo.setFill(patronImagenPared);
                 } else {
@@ -186,11 +186,16 @@ public class JuegoController implements Observador {
                     Personaje ocupante = celda.getOcupante();
                     Rectangle personajeRect = new Rectangle(tamCelda * 0.8, tamCelda * 0.8);
 
-                    // Color based on character type (player or enemy)
+                    Image prota = new Image(getClass().getResourceAsStream("/com/proyecto/Imagenes/Charizard.png"));
+                    ImagePattern patronImagenProta = new ImagePattern(prota);
+
+                    Image ene = new Image(getClass().getResourceAsStream("/com/proyecto/Imagenes/CastformAgua.jpg"));
+                    ImagePattern patronImagenEne = new ImagePattern(ene);
+
                     if (ocupante instanceof Protagonista) {
-                        personajeRect.setFill(Color.BLUE);
+                        personajeRect.setFill(patronImagenProta);
                     } else {
-                        personajeRect.setFill(Color.RED);
+                        personajeRect.setFill(patronImagenEne);
                     }
 
                     celdaVisual.getChildren().add(personajeRect);
