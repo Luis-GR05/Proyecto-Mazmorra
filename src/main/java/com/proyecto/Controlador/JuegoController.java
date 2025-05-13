@@ -5,13 +5,17 @@ import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
+import javafx.stage.Modality;
 
 import java.io.IOException;
 import java.util.*;
@@ -189,26 +193,28 @@ public class JuegoController implements Observador {
                     Image prota = new Image(getClass().getResourceAsStream("/com/proyecto/Imagenes/Charizard.png"));
                     ImagePattern patronImagenProta = new ImagePattern(prota);
 
-                    Image eneAgua = new Image(getClass().getResourceAsStream("/com/proyecto/Imagenes/CastformAgua.png"));
+                    Image eneAgua = new Image(
+                            getClass().getResourceAsStream("/com/proyecto/Imagenes/CastformAgua.png"));
                     Image eneSol = new Image(getClass().getResourceAsStream("/com/proyecto/Imagenes/CastformSol.png"));
-                    Image eneNieve = new Image(getClass().getResourceAsStream("/com/proyecto/Imagenes/CastformNieve.png"));
+                    Image eneNieve = new Image(
+                            getClass().getResourceAsStream("/com/proyecto/Imagenes/CastformNieve.png"));
 
                     if (ocupante instanceof Protagonista) {
                         personajeRect.setFill(patronImagenProta);
                     } else {
-                            // Asignar diferentes imágenes según el índice del enemigo
-                            int index = mazmorra.getEnemigos().indexOf(ocupante);
-                            switch(index % 3) {
-                                case 0:
-                                    personajeRect.setFill(new ImagePattern(eneAgua));
+                        // Asignar diferentes imágenes según el índice del enemigo
+                        int index = mazmorra.getEnemigos().indexOf(ocupante);
+                        switch (index % 3) {
+                            case 0:
+                                personajeRect.setFill(new ImagePattern(eneAgua));
                                 break;
-                                case 1:
-                                    personajeRect.setFill(new ImagePattern(eneSol));
+                            case 1:
+                                personajeRect.setFill(new ImagePattern(eneSol));
                                 break;
-                                case 2:
-                                    personajeRect.setFill(new ImagePattern(eneNieve));
+                            case 2:
+                                personajeRect.setFill(new ImagePattern(eneNieve));
                                 break;
-                            }
+                        }
                     }
                     celdaVisual.getChildren().add(personajeRect);
                     personajesVisuales.put(ocupante, celdaVisual);
@@ -543,19 +549,57 @@ public class JuegoController implements Observador {
     private void finalizarJuego(boolean victoria) {
         juegoTerminado = true;
 
-        if (victoria) {
-            mostrarMensaje("¡VICTORIA! Has derrotado a todos los enemigos.");
-        } else {
-            mostrarMensaje("¡DERROTA! Has sido derrotado.");
-        }
+        // Crear una alerta con estilo de juego
+        Alert alert = new Alert(Alert.AlertType.NONE);
+        alert.setTitle("Fin del Juego");
 
-        // Mostrar ventana de diálogo con resultado
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Fin del juego");
-        alert.setHeaderText(victoria ? "¡VICTORIA!" : "¡DERROTA!");
-        alert.setContentText(victoria ? "¡Enhorabuena! Has derrotado a todos los enemigos de la mazmorra."
-                : "Has sido derrotado por los enemigos. ¡Mejor suerte la próxima vez!");
+        // Crear un diseño personalizado
+        VBox dialogPaneContent = new VBox(20);
+        dialogPaneContent.setAlignment(Pos.CENTER);
+        dialogPaneContent.setPadding(new Insets(20));
 
+        // Estilo de fondo similar al juego
+        dialogPaneContent.setStyle("-fx-background-color: #2b2b2b; -fx-border-color: #5d5d5d; -fx-border-width: 3px;");
+
+        // Icono de victoria/derrota
+        ImageView icono = new ImageView();
+        String imagenPath = victoria ? "/com/proyecto/Imagenes/CharizardAtaque.png" : "/com/proyecto/Imagenes/CastformSol.png";
+        Image imagen = new Image(getClass().getResourceAsStream(imagenPath));
+        icono.setImage(imagen);
+        icono.setFitWidth(80);
+        icono.setFitHeight(80);
+
+        // Título principal
+        Label titulo = new Label(victoria ? "¡VICTORIA!" : "¡DERROTA!");
+        titulo.setStyle("-fx-font-size: 32px; -fx-font-weight: bold; -fx-text-fill: " +
+                (victoria ? "#4CAF50;" : "#F44336;"));
+
+        // Mensaje descriptivo
+        Label mensaje = new Label(victoria ? "Has conquistado la mazmorra" : "Los enemigos te han derrotado");
+        mensaje.setStyle("-fx-font-size: 18px; -fx-text-fill: #e0e0e0;");
+
+        // Puntuación o estadísticas
+        Label detalles = new Label(
+                victoria ? "¡Enhorabuena, " + nombreJugador + "!" : "¡Inténtalo de nuevo, " + nombreJugador + "!");
+        detalles.setStyle("-fx-font-size: 16px; -fx-text-fill: #aaaaaa;");
+
+        // Botón personalizado
+        ButtonType botonAceptar = new ButtonType("Aceptar", ButtonBar.ButtonData.OK_DONE);
+        alert.getButtonTypes().setAll(botonAceptar);
+
+        // Añadir todos los elementos
+        dialogPaneContent.getChildren().addAll(icono, titulo, mensaje, detalles);
+        alert.getDialogPane().setContent(dialogPaneContent);
+
+        // Estilo del diálogo
+        alert.getDialogPane().setStyle("-fx-background-color: #2b2b2b;");
+        alert.getDialogPane().setMinSize(400, 300);
+
+        // Centrar en la pantalla
+        alert.initOwner(tableroGrid.getScene().getWindow());
+        alert.initModality(Modality.APPLICATION_MODAL);
+
+        // Mostrar la alerta
         alert.showAndWait();
     }
 
