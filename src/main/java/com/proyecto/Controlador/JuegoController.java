@@ -189,7 +189,7 @@ public class JuegoController implements Observador {
                     Image prota = new Image(getClass().getResourceAsStream("/com/proyecto/Imagenes/Charizard.png"));
                     ImagePattern patronImagenProta = new ImagePattern(prota);
 
-                    Image ene = new Image(getClass().getResourceAsStream("/com/proyecto/Imagenes/CastformAgua.jpg"));
+                    Image ene = new Image(getClass().getResourceAsStream("/com/proyecto/Imagenes/CastformAgua.png"));
                     ImagePattern patronImagenEne = new ImagePattern(ene);
 
                     if (ocupante instanceof Protagonista) {
