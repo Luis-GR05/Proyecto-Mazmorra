@@ -144,7 +144,7 @@ public class JuegoController implements Observador {
 
         int ancho = mazmorra.getAncho();
         int alto = mazmorra.getAlto();
-        int tamCelda = 40; // Cell size in pixels
+        int tamCelda = 60; // Cell size in pixels
 
         // Create column and row constraints
         for (int i = 0; i < ancho; i++) {
@@ -234,35 +234,46 @@ public class JuegoController implements Observador {
         for (int i = 0; i < mazmorra.getEnemigos().size(); i++) {
             enemigo enemigo = mazmorra.getEnemigos().get(i);
 
-            // Crear panel para el enemigo
-            VBox enemigoInfo = new VBox(5);
+            // Solo mostrar enemigos vivos
+            if (enemigo.getSalud() > 0) {
 
-            Label nombreLabel = new Label("Enemigo " + (i + 1));
-            nombreLabel.setStyle("-fx-font-weight: bold;");
+                VBox enemigoInfo = new VBox(5);
+                Label nombreLabel = new Label("Enemigo " + (i + 1));
+                nombreLabel.setStyle("-fx-font-weight: bold;");
 
-            ProgressBar saludBar = new ProgressBar();
-            saludBar.setPrefWidth(200);
+                ProgressBar saludBar = new ProgressBar();
+                saludBar.setPrefWidth(200);
 
-            int saludMax = enemigo.getSalud();
-            int saludActual = Math.max(0, enemigo.getSalud());
+                int saludMax = enemigo.getSaludMax();
+                int saludActual = Math.max(0, enemigo.getSalud());
 
-            saludBar.setProgress((double) saludActual / saludMax);
+                saludBar.setProgress((double) saludActual / saludMax);
 
-            Label saludLabel = new Label("Salud: " + saludActual + "/" + saludMax);
-            Label fuerzaLabel = new Label("Fuerza: " + enemigo.getFuerza());
-            Label defensaLabel = new Label("Defensa: " + enemigo.getDefensa());
-            Label velocidadLabel = new Label("Velocidad: " + enemigo.getVelocidad());
-            Label percepcionLabel = new Label("Percepción: " + enemigo.getPercepcion());
+                // Cambiar color de la barra según la salud
+                if (saludActual < saludMax * 0.3) {
+                    saludBar.setStyle("-fx-accent: red;");
+                } else if (saludActual < saludMax * 0.6) {
+                    saludBar.setStyle("-fx-accent: orange;");
+                } else {
+                    saludBar.setStyle("-fx-accent: green;");
+                }
 
-            enemigoInfo.getChildren().addAll(nombreLabel, saludBar, saludLabel,
-                    fuerzaLabel, defensaLabel, velocidadLabel, percepcionLabel);
+                Label saludLabel = new Label("Salud: " + saludActual + "/" + saludMax);
+                Label fuerzaLabel = new Label("Fuerza: " + enemigo.getFuerza());
+                Label defensaLabel = new Label("Defensa: " + enemigo.getDefensa());
+                Label velocidadLabel = new Label("Velocidad: " + enemigo.getVelocidad());
+                Label percepcionLabel = new Label("Percepción: " + enemigo.getPercepcion());
 
-            // Añadir separador si no es el último enemigo
-            if (i < mazmorra.getEnemigos().size() - 1) {
-                enemigoInfo.getChildren().add(new Separator());
+                enemigoInfo.getChildren().addAll(nombreLabel, saludBar, saludLabel,
+                        fuerzaLabel, defensaLabel, velocidadLabel, percepcionLabel);
+
+                // Añadir separador si no es el último enemigo
+                if (i < mazmorra.getEnemigos().size() - 1) {
+                    enemigoInfo.getChildren().add(new Separator());
+                }
+
+                enemigosContainer.getChildren().add(enemigoInfo);
             }
-
-            enemigosContainer.getChildren().add(enemigoInfo);
         }
     }
 

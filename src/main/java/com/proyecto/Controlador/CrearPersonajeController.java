@@ -56,8 +56,8 @@ public class CrearPersonajeController {
     @FXML
     private Label mensajeError;
 
-    private int puntosTotales = 150; // Total de puntos para distribuir
-    private int puntosRestantes = 50; // Puntos disponibles después de la configuración inicial
+    private int puntosTotales = 200; // Total de puntos para distribuir
+    private int puntosRestantes = 100; // Puntos disponibles después de la configuración inicial
 
     /**
      * Inicializa el controlador

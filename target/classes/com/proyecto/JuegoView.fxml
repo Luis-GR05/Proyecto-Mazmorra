@@ -8,7 +8,7 @@
 <BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="com.proyecto.Controlador.JuegoController"
-            prefHeight="700.0" prefWidth="1000.0">
+            prefHeight="800.0" prefWidth="1200.0">
     
     <!-- Panel superior con información del turno -->
     <top>
@@ -29,7 +29,7 @@
     
     <!-- Panel lateral con información de personajes -->
     <right>
-        <VBox spacing="20" style="-fx-padding: 15; -fx-background-color: #e0e0e0;" prefWidth="250">
+        <VBox spacing="20" style="-fx-padding: 15; -fx-background-color: #e0e0e0;" prefWidth="300">
             <!-- Información del protagonista -->
             <TitledPane text="Protagonista" expanded="true">
                 <VBox spacing="5">
