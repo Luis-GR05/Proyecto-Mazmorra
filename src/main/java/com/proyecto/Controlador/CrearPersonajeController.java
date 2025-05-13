@@ -16,7 +16,7 @@ import java.io.IOException;
 /**
  * Controlador para la vista de creación del personaje protagonista
  * 
- * @author Tu Nombre
+ * @author Luis Gordillo
  */
 public class CrearPersonajeController {
 
