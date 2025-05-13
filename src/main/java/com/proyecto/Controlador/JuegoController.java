@@ -189,15 +189,27 @@ public class JuegoController implements Observador {
                     Image prota = new Image(getClass().getResourceAsStream("/com/proyecto/Imagenes/Charizard.png"));
                     ImagePattern patronImagenProta = new ImagePattern(prota);
 
-                    Image ene = new Image(getClass().getResourceAsStream("/com/proyecto/Imagenes/CastformAgua.png"));
-                    ImagePattern patronImagenEne = new ImagePattern(ene);
+                    Image eneAgua = new Image(getClass().getResourceAsStream("/com/proyecto/Imagenes/CastformAgua.png"));
+                    Image eneSol = new Image(getClass().getResourceAsStream("/com/proyecto/Imagenes/CastformSol.png"));
+                    Image eneNieve = new Image(getClass().getResourceAsStream("/com/proyecto/Imagenes/CastformNieve.png"));
 
                     if (ocupante instanceof Protagonista) {
                         personajeRect.setFill(patronImagenProta);
                     } else {
-                        personajeRect.setFill(patronImagenEne);
+                            // Asignar diferentes imágenes según el índice del enemigo
+                            int index = mazmorra.getEnemigos().indexOf(ocupante);
+                            switch(index % 3) {
+                                case 0:
+                                    personajeRect.setFill(new ImagePattern(eneAgua));
+                                break;
+                                case 1:
+                                    personajeRect.setFill(new ImagePattern(eneSol));
+                                break;
+                                case 2:
+                                    personajeRect.setFill(new ImagePattern(eneNieve));
+                                break;
+                            }
                     }
-
                     celdaVisual.getChildren().add(personajeRect);
                     personajesVisuales.put(ocupante, celdaVisual);
                 }
