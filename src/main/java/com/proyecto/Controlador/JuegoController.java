@@ -203,15 +203,18 @@ public class JuegoController implements Observador {
 
                         switch (enemigo.getTipo()) {
                             case AGUA:
-                                Image eneAgua = new Image(getClass().getResourceAsStream("/com/proyecto/Imagenes/CastformAgua.png"));
+                                Image eneAgua = new Image(
+                                        getClass().getResourceAsStream("/com/proyecto/Imagenes/CastformAgua.png"));
                                 personajeRect.setFill(new ImagePattern(eneAgua));
                                 break;
                             case SOL:
-                                Image eneSol = new Image(getClass().getResourceAsStream("/com/proyecto/Imagenes/CastformSol.png"));
+                                Image eneSol = new Image(
+                                        getClass().getResourceAsStream("/com/proyecto/Imagenes/CastformSol.png"));
                                 personajeRect.setFill(new ImagePattern(eneSol));
                                 break;
                             case NIEVE:
-                                Image eneNieve = new Image(getClass().getResourceAsStream("/com/proyecto/Imagenes/CastformNieve.png"));
+                                Image eneNieve = new Image(
+                                        getClass().getResourceAsStream("/com/proyecto/Imagenes/CastformNieve.png"));
                                 personajeRect.setFill(new ImagePattern(eneNieve));
                                 break;
                         }
@@ -233,8 +236,21 @@ public class JuegoController implements Observador {
 
         nombreJugadorLabel.setText("Nombre: " + nombreJugador);
 
-        int saludMax = jugador.getSalud();
+        int saludMax = jugador.getSaludMax();
         int saludActual = Math.max(0, jugador.getSalud());
+        ProgressBar saludJugadorBar = new ProgressBar();
+        saludJugadorBar.setPrefWidth(200);
+
+
+        saludJugadorBar.setProgress((double) saludActual / saludMax);
+        // Cambiar color de la barra según la salud
+        if (saludActual < saludMax * 0.3) {
+            saludJugadorBar.setStyle("-fx-accent: red;");
+        } else if (saludActual < saludMax * 0.6) {
+            saludJugadorBar.setStyle("-fx-accent: orange;");
+        } else {
+            saludJugadorBar.setStyle("-fx-accent: green;");
+        }
 
         saludJugadorBar.setProgress((double) saludActual / saludMax);
         saludJugadorLabel.setText("Salud: " + saludActual + "/" + saludMax);

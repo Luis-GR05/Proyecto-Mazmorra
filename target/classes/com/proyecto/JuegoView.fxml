@@ -34,7 +34,7 @@
             <TitledPane text="Protagonista" expanded="true">
                 <VBox spacing="5">
                     <Label fx:id="nombreJugadorLabel" text="Nombre: [nombre]"/>
-                    <ProgressBar fx:id="saludJugadorBar" progress="1.0" prefWidth="200"/>
+                    <ProgressBar fx:id="saludJugadorBar" progress="1.0" prefWidth="200" style="-fx-accent: red;"/>
                     <Label fx:id="saludJugadorLabel" text="Salud: 100/100"/>
                     <Label fx:id="fuerzaJugadorLabel" text="Fuerza: 25"/>
                     <Label fx:id="defensaJugadorLabel" text="Defensa: 25"/>

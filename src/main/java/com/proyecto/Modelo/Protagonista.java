@@ -8,10 +8,16 @@ package com.proyecto.Modelo;
 
 public class Protagonista extends Personaje {
     private boolean turnoEnEspera;
+    private int saludMax;
 
     public Protagonista(int salud, int fuerza, int defensa, int velocidad) {
         super(salud, fuerza, defensa, velocidad);
         this.turnoEnEspera = true;
+        this.saludMax=salud;
+    }
+
+    public int getSaludMax(){
+        return this.saludMax;
     }
 
     /**
