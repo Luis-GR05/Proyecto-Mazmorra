@@ -1,0 +1,48 @@
+@options
+@packages
+@argfile
+--class-path
+'C:/Users/luisg/.m2/repository/org/openjfx/javafx-controls/13/javafx-controls-13.jar;C:/Users/luisg/.m2/repository/org/openjfx/javafx-graphics/13/javafx-graphics-13.jar;C:/Users/luisg/.m2/repository/org/openjfx/javafx-base/13/javafx-base-13.jar;C:/Users/luisg/.m2/repository/org/openjfx/javafx-fxml/13/javafx-fxml-13.jar'
+--module-path
+'C:/Users/luisg/.m2/repository/org/openjfx/javafx-fxml/13/javafx-fxml-13-win.jar;C:/Users/luisg/.m2/repository/org/openjfx/javafx-controls/13/javafx-controls-13-win.jar;C:/Users/luisg/OneDrive/Documentos/1ºDawB/Proyecto-Mazmorra/target/classes;C:/Users/luisg/.m2/repository/org/openjfx/javafx-base/13/javafx-base-13-win.jar;C:/Users/luisg/.m2/repository/org/openjfx/javafx-graphics/13/javafx-graphics-13-win.jar'
+--patch-module
+com.proyecto='C:/Users/luisg/OneDrive/Documentos/1ºDawB/Proyecto-Mazmorra/src/main/java'
+-encoding
+'UTF-8'
+-private
+-source
+'11'
+--module-source-path
+'C:/Users/luisg/OneDrive/Documentos/1ºDawB/Proyecto-Mazmorra/target/site/apidocs/src'
+-author
+-bottom
+'Copyright &#169; 2025. All rights reserved.'
+-charset
+'UTF-8'
+-d
+'C:/Users/luisg/OneDrive/Documentos/1ºDawB/Proyecto-Mazmorra/target/site/apidocs'
+-docencoding
+'UTF-8'
+-doctitle
+'proyecto 1.0-SNAPSHOT API'
+-linkoffline
+'https://docs.oracle.com/en/java/javase/11/docs/api' 'C:/Users/luisg/OneDrive/Documentos/1ºDawB/Proyecto-Mazmorra/target/javadoc-bundle-options'
+-use
+-version
+-windowtitle
+'proyecto 1.0-SNAPSHOT API'
+com.proyecto
+'C:/Users/luisg/OneDrive/Documentos/1ºDawB/Proyecto-Mazmorra/src/main/java/module-info.java'
+C:\Users\luisg\OneDrive\Documentos\1ºDawB\Proyecto-Mazmorra\target\site\apidocs\allclasses-index.html = 1747222075159
+C:\Users\luisg\OneDrive\Documentos\1ºDawB\Proyecto-Mazmorra\target\site\apidocs\allpackages-index.html = 1747222075163
+C:\Users\luisg\OneDrive\Documentos\1ºDawB\Proyecto-Mazmorra\target\site\apidocs\element-list = 1747222074824
+C:\Users\luisg\OneDrive\Documentos\1ºDawB\Proyecto-Mazmorra\target\site\apidocs\help-doc.html = 1747222075230
+C:\Users\luisg\OneDrive\Documentos\1ºDawB\Proyecto-Mazmorra\target\site\apidocs\index-all.html = 1747222075205
+C:\Users\luisg\OneDrive\Documentos\1ºDawB\Proyecto-Mazmorra\target\site\apidocs\index.html = 1747222075213
+C:\Users\luisg\OneDrive\Documentos\1ºDawB\Proyecto-Mazmorra\target\site\apidocs\member-search-index.js = 1747222075174
+C:\Users\luisg\OneDrive\Documentos\1ºDawB\Proyecto-Mazmorra\target\site\apidocs\module-search-index.js = 1747222075167
+C:\Users\luisg\OneDrive\Documentos\1ºDawB\Proyecto-Mazmorra\target\site\apidocs\overview-tree.html = 1747222075130
+C:\Users\luisg\OneDrive\Documentos\1ºDawB\Proyecto-Mazmorra\target\site\apidocs\package-search-index.js = 1747222075170
+C:\Users\luisg\OneDrive\Documentos\1ºDawB\Proyecto-Mazmorra\target\site\apidocs\search.html = 1747222075209
+C:\Users\luisg\OneDrive\Documentos\1ºDawB\Proyecto-Mazmorra\target\site\apidocs\tag-search-index.js = 1747222075177
+C:\Users\luisg\OneDrive\Documentos\1ºDawB\Proyecto-Mazmorra\target\site\apidocs\type-search-index.js = 1747222075172
