@@ -79,6 +79,9 @@ public class Mazmorra implements Sujeto {
                     case 'E': // Posición de enemigo
                         getEscenario()[y][x] = new Celda(tipoCelda.suelo);
                         break;
+                    case 'T': // Trampa
+                        getEscenario()[y][x] = new Celda(tipoCelda.trampa);
+                        break;
                     default:
                         getEscenario()[y][x] = new Celda(tipoCelda.suelo);
                         break;
@@ -110,7 +113,7 @@ public class Mazmorra implements Sujeto {
                 }
 
                 String[] datos = linea.split(",");
-                if (datos.length < 8){
+                if (datos.length < 8) {
                     System.err.println("Línea CSV inválida (campos insuficientes): " + linea);
                 } else {
 
@@ -125,7 +128,8 @@ public class Mazmorra implements Sujeto {
                         tipoEnemigo tipo = tipoEnemigo.valueOf(datos[7].trim().toUpperCase());
 
                         if (x < 0 || x >= ancho || y < 0 || y >= alto) {
-                            System.err.println("Posición de enemigo fuera de límites: x=" + x + ", y=" + y + ". Ajustando a posición válida.");
+                            System.err.println("Posición de enemigo fuera de límites: x=" + x + ", y=" + y
+                                    + ". Ajustando a posición válida.");
                             // Ajustar a posición válida
                             x = Math.min(Math.max(0, x), ancho - 1);
                             y = Math.min(Math.max(0, y), alto - 1);
@@ -219,6 +223,27 @@ public class Mazmorra implements Sujeto {
             escenario[nuevaY][nuevaX].setOcupante(personaje);
             personaje.setPosX(nuevaX);
             personaje.setPosY(nuevaY);
+
+            // Verificar si la celda es una trampa
+            if (escenario[nuevaY][nuevaX].esTrampa()) {
+                int trampa = 10;
+                personaje.setSalud(personaje.getSalud() - trampa);
+
+                // Si el personaje muere, eliminarlo de la celda
+                if (personaje.getSalud() <= 0) {
+                    escenario[nuevaY][nuevaX].setOcupante(null);
+
+                    // Si es el protagonista, notificar fin del juego
+                    if (personaje instanceof Protagonista) {
+                        notificarObservadores();
+                        return true;
+                    }
+                    // Si es un enemigo, eliminarlo de la lista
+                    else if (personaje instanceof enemigo) {
+                        enemigos.remove(personaje);
+                    }
+                }
+            }
         }
         notificarObservadores();
 

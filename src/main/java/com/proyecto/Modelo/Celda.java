@@ -78,6 +78,15 @@ public class Celda {
     }
 
     /**
+     * Verifica si la celda es una trampa.
+     * 
+     * @return true si es suelo, false en caso contrario.
+     */
+    public boolean esTrampa() {
+        return tipo == tipoCelda.trampa;
+    }
+
+    /**
      * Verifica si la celda está ocupada por un personaje.
      * 
      * @return true si hay un personaje, false si está vacía.

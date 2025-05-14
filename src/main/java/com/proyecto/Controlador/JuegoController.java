@@ -181,7 +181,11 @@ public class JuegoController implements Observador {
                 // Poner imagenes dependiendo del tipo
                 if (celda.esPared()) {
                     fondo.setFill(patronImagenPared);
-                } else {
+                } 
+                else if (celda.esTrampa()) {
+                    fondo.setFill(Color.RED);
+                    }
+                else {
                     fondo.setFill(patronImagenSuelo);
                 }
 
@@ -442,7 +446,6 @@ public class JuegoController implements Observador {
             atacar(jugador, defensor);
             valido = true;
         } else {
-
             // Mover al jugador
             mazmorra.moverPersonaje(jugador, nuevaX, nuevaY);
             mostrarMensaje("Te has movido.");
