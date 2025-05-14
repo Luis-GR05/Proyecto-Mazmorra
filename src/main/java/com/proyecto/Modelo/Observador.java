@@ -1,14 +1,18 @@
 package com.proyecto.Modelo;
 
 /**
- * Interfaz para implementar el patrón Observador
+ * Interfaz para implementar el patrón Observador.
+ * Las clases que implementen esta interfaz recibirán notificaciones de cambios
+ * en el modelo.
+ * 
  * @author Luis Gordillo
  * @author Roberto Borrallo
  * @author José María Gutierrez
+ * @version 1.0
  */
 public interface Observador {
     /**
-     * Método que se llama cuando el modelo observado cambia
+     * Método llamado cuando el sujeto observado notifica un cambio.
      */
     void actualizar();
 }
