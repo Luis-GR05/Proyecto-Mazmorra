@@ -8,17 +8,20 @@ import javafx.stage.Stage;
 
 /**
  * Clase principal que inicia la aplicación del juego de mazmorras
- * @author Tu Nombre
+ * 
+ * @author Luis Gordillo
+ * @author Roberto Borrallo
+ * @author José María Gutierrez
  */
 public class App extends Application {
-    
+
     @Override
     public void start(Stage primaryStage) throws Exception {
         // Cargar la vista de creación de personaje
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("CrearPersonajeView.fxml"));
         Parent root = loader.load();
-        
+
         // Configurar la escena y mostrar
         Scene scene = new Scene(root);
         primaryStage.setScene(scene);
@@ -26,9 +29,10 @@ public class App extends Application {
         primaryStage.setResizable(false);
         primaryStage.show();
     }
-    
+
     /**
      * Método principal que lanza la aplicación
+     * 
      * @param args Argumentos de línea de comandos
      */
     public static void main(String[] args) {

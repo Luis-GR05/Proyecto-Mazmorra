@@ -1,17 +1,22 @@
 package com.proyecto.Modelo;
 
+/**
+ * @author Luis Gordillo
+ * @author Roberto Borrallo
+ * @author José María Gutierrez
+ */
+
 public abstract class Personaje {
     protected int salud, fuerza, defensa, velocidad, posX, posY;
 
-    public Personaje(int salud, int fuerza, int defensa, int velocidad){
-        this.salud=salud;
-        this.fuerza=fuerza;
-        this.defensa=defensa;
-        this.velocidad=velocidad;
-        this.posX=0;
-        this.posY=0;
+    public Personaje(int salud, int fuerza, int defensa, int velocidad) {
+        this.salud = salud;
+        this.fuerza = fuerza;
+        this.defensa = defensa;
+        this.velocidad = velocidad;
+        this.posX = 0;
+        this.posY = 0;
     }
-
 
     public int getSalud() {
         return this.salud;
@@ -62,7 +67,6 @@ public abstract class Personaje {
     }
 
     public abstract void jugar();
-
 
     public static void atacar(Personaje atacante, Personaje defensor) {
         int daño = Math.max(0, atacante.getFuerza() - defensor.getDefensa());

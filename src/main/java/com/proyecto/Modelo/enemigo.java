@@ -2,15 +2,23 @@ package com.proyecto.Modelo;
 
 import java.util.Random;
 
+/**
+ * @author Luis Gordillo
+ * @author Roberto Borrallo
+ * @author José María Gutierrez
+ */
+
 public class enemigo extends Personaje {
+    private tipoEnemigo tipo;
     private int percepcion;
     private Mazmorra mazmorra;
     private int saludMax;
 
-    public enemigo(int salud, int fuerza, int defensa, int velocidad, int percepcion) {
+    public enemigo(int salud, int fuerza, int defensa, int velocidad, int percepcion, tipoEnemigo tipo) {
         super(salud, fuerza, defensa, velocidad);
         this.percepcion = percepcion;
         this.saludMax = salud;
+        this.tipo = tipo;
     }
 
     /**
@@ -33,6 +41,14 @@ public class enemigo extends Personaje {
     // Añadir método para obtener salud máxima
     public int getSaludMax() {
         return this.saludMax;
+    }
+
+    public void setTipo(tipoEnemigo tipo){
+        this.tipo = tipo;
+    }
+
+    public tipoEnemigo getTipo(){
+        return this.tipo;
     }
 
     /**

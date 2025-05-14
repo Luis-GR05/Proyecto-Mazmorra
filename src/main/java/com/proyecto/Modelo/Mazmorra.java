@@ -9,7 +9,9 @@ import java.util.List;
 /**
  * Clase que representa la mazmorra del juego y mantiene el estado global
  * 
- * @author Tu Nombre
+ * @author Luis Gordillo
+ * @author Roberto Borrallo
+ * @author José María Gutierrez
  */
 public class Mazmorra implements Sujeto {
     private Celda[][] escenario;
@@ -108,7 +110,7 @@ public class Mazmorra implements Sujeto {
                 }
 
                 String[] datos = linea.split(",");
-                if (datos.length < 7) {
+                if (datos.length < 8){
                     System.err.println("Línea CSV inválida (campos insuficientes): " + linea);
                 } else {
 
@@ -120,16 +122,16 @@ public class Mazmorra implements Sujeto {
                         int percepcion = Integer.parseInt(datos[4].trim());
                         int x = Integer.parseInt(datos[5].trim());
                         int y = Integer.parseInt(datos[6].trim());
+                        tipoEnemigo tipo = tipoEnemigo.valueOf(datos[7].trim().toUpperCase());
 
                         if (x < 0 || x >= ancho || y < 0 || y >= alto) {
-                            System.err.println("Posición de enemigo fuera de límites: x=" + x + ", y=" + y +
-                                    ". Ajustando a posición válida.");
+                            System.err.println("Posición de enemigo fuera de límites: x=" + x + ", y=" + y + ". Ajustando a posición válida.");
                             // Ajustar a posición válida
                             x = Math.min(Math.max(0, x), ancho - 1);
                             y = Math.min(Math.max(0, y), alto - 1);
                         }
 
-                        enemigo nuevoEnemigo = new enemigo(salud, fuerza, defensa, velocidad, percepcion);
+                        enemigo nuevoEnemigo = new enemigo(salud, fuerza, defensa, velocidad, percepcion, tipo);
                         nuevoEnemigo.setPosX(x);
                         nuevoEnemigo.setPosY(y);
                         nuevoEnemigo.setMazmorra(this);
@@ -219,7 +221,7 @@ public class Mazmorra implements Sujeto {
             personaje.setPosY(nuevaY);
         }
         notificarObservadores();
-        
+
         return valida;
     }
 

@@ -1,5 +1,11 @@
 package com.proyecto.Modelo;
 
+/**
+ * @author Luis Gordillo
+ * @author Roberto Borrallo
+ * @author José María Gutierrez
+ */
+
 public class Celda {
     private tipoCelda tipo;
     private Personaje ocupante; //Null si no hay personaje

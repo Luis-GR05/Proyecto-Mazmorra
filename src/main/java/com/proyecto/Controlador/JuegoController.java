@@ -25,7 +25,9 @@ import java.util.*;
  * Implementa el patrón Observador para actualizar la vista cuando cambia el
  * modelo
  * 
- * @author Tu Nombre
+ * @author Luis Gordillo
+ * @author Roberto Borrallo
+ * @author José María Gutierrez
  */
 public class JuegoController implements Observador {
 
@@ -185,7 +187,7 @@ public class JuegoController implements Observador {
 
                 celdaVisual.getChildren().add(fondo);
 
-                // If the cell is occupied by a character, add a colored rectangle
+                // Si la celda está ocupada por un personaje, ponemos una imagen
                 if (celda.estaOcupada()) {
                     Personaje ocupante = celda.getOcupante();
                     Rectangle personajeRect = new Rectangle(tamCelda * 0.8, tamCelda * 0.8);
@@ -193,25 +195,23 @@ public class JuegoController implements Observador {
                     Image prota = new Image(getClass().getResourceAsStream("/com/proyecto/Imagenes/Charizard.png"));
                     ImagePattern patronImagenProta = new ImagePattern(prota);
 
-                    Image eneAgua = new Image(
-                            getClass().getResourceAsStream("/com/proyecto/Imagenes/CastformAgua.png"));
-                    Image eneSol = new Image(getClass().getResourceAsStream("/com/proyecto/Imagenes/CastformSol.png"));
-                    Image eneNieve = new Image(
-                            getClass().getResourceAsStream("/com/proyecto/Imagenes/CastformNieve.png"));
-
                     if (ocupante instanceof Protagonista) {
                         personajeRect.setFill(patronImagenProta);
-                    } else {
-                        // Asignar diferentes imágenes según el índice del enemigo
-                        int index = mazmorra.getEnemigos().indexOf(ocupante);
-                        switch (index % 3) {
-                            case 0:
+                    } else if (ocupante instanceof enemigo) {
+                        // Asignar imágenes según el tipo de enemigo
+                        enemigo enemigo = (enemigo) ocupante;
+
+                        switch (enemigo.getTipo()) {
+                            case AGUA:
+                                Image eneAgua = new Image(getClass().getResourceAsStream("/com/proyecto/Imagenes/CastformAgua.png"));
                                 personajeRect.setFill(new ImagePattern(eneAgua));
                                 break;
-                            case 1:
+                            case SOL:
+                                Image eneSol = new Image(getClass().getResourceAsStream("/com/proyecto/Imagenes/CastformSol.png"));
                                 personajeRect.setFill(new ImagePattern(eneSol));
                                 break;
-                            case 2:
+                            case NIEVE:
+                                Image eneNieve = new Image(getClass().getResourceAsStream("/com/proyecto/Imagenes/CastformNieve.png"));
                                 personajeRect.setFill(new ImagePattern(eneNieve));
                                 break;
                         }
@@ -563,7 +563,8 @@ public class JuegoController implements Observador {
 
         // Icono de victoria/derrota
         ImageView icono = new ImageView();
-        String imagenPath = victoria ? "/com/proyecto/Imagenes/CharizardAtaque.png" : "/com/proyecto/Imagenes/CastformSol.png";
+        String imagenPath = victoria ? "/com/proyecto/Imagenes/CharizardAtaque.png"
+                : "/com/proyecto/Imagenes/CastformSol.png";
         Image imagen = new Image(getClass().getResourceAsStream(imagenPath));
         icono.setImage(imagen);
         icono.setFitWidth(80);
