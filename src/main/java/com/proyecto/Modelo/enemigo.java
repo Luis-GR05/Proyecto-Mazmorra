@@ -30,24 +30,48 @@ public class enemigo extends Personaje {
         this.mazmorra = mazmorra;
     }
 
+    /**
+     * Obtiene el valor de percepción del objeto.
+     *
+     * @return el valor actual de percepción.
+     */
     public int getPercepcion() {
         return this.percepcion;
     }
 
+    /**
+     * Establece un nuevo valor para la percepción.
+     *
+     * @param percepcion el nuevo valor de percepción.
+     */
     public void setPercepcion(int percepcion) {
         this.percepcion = percepcion;
     }
 
-    // Añadir método para obtener salud máxima
+    /**
+     * Obtiene el valor de salud máxima.
+     *
+     * @return la salud máxima del objeto.
+     */
     public int getSaludMax() {
         return this.saludMax;
     }
 
-    public void setTipo(tipoEnemigo tipo){
+    /**
+     * Establece el tipo de enemigo.
+     *
+     * @param tipo el nuevo tipo de enemigo.
+     */
+    public void setTipo(tipoEnemigo tipo) {
         this.tipo = tipo;
     }
 
-    public tipoEnemigo getTipo(){
+    /**
+     * Obtiene el tipo de enemigo.
+     *
+     * @return el tipo de enemigo asignado.
+     */
+    public tipoEnemigo getTipo() {
         return this.tipo;
     }
 
